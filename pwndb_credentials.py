@@ -50,6 +50,8 @@ class FindPasswords():
         return result
     
 if __name__ == "__main__":
+    print("Author: @JosueEncinar")
+    print("---------------------")
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--mail", help="Email to search passwords", required=True)
     parser.add_argument("-p", "--proxy", help="TOR proxy", default="socks5h://localhost:9050")
