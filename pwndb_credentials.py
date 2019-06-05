@@ -36,19 +36,16 @@ class FindPasswords():
 
     def request_data(self):
         result = []
-        if self.session is None:
-            return []
-        try:
+        if self.session is not None:
             response = self.session.post(self.url, data=self.data, timeout=5)
-            soup = soup = BeautifulSoup(response.text, features="html.parser")
-            passwords = soup.find("pre").get_text()
-            if passwords:
-                i = 0
-                for line in passwords.split("\n"):
-                    if "[password]" in line:
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, features="html.parser")
+                try:
+                    passwords = soup.find("pre").get_text()
+                    for line in re.findall("\[password\] => .*", passwords):
                         result.append(line.split("=> ")[1])
-        except Exception as e:
-            print(e)
+                except Exception as e:
+                    print(e)
 
         return result
     
