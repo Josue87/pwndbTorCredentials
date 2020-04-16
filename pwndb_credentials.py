@@ -43,7 +43,9 @@ class FindPasswords():
                 try:
                     passwords = soup.find("pre").get_text()
                     for line in re.findall("\[password\] => .*", passwords):
-                        result.append(line.split("=> ")[1])
+                        newpass = line.split("=> ")[1]
+                        if newpass != "12cC7BdkBbru6JGsWvTx4PPM5LjLX8g49X":
+                            result.append(newpass)
                 except Exception as e:
                     print(e)
 
@@ -63,8 +65,15 @@ if __name__ == "__main__":
     if match:
         print(f"Looking passwords for {mail}")
         passwords = FindPasswords(mail, proxy)
-        data = passwords.request_data()
-        print("--------- Passwords list --------")
-        print(data)
+        try:
+            data = passwords.request_data()
+            print("--------- Passwords list --------")
+            print(data)
+        except TimeoutError as e:
+            print("[-] Error when connecting with pwndb2am4tzkvold.onion")
+        except Exception as e:
+            print("[-] Something was wrong")
+            print(e)
+
     else:
         print("Please enter a valid mail")
